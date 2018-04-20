@@ -14,7 +14,7 @@ public class FilmDAO extends DAO<Film, Integer> {
         ArrayList<Film> filmArrayList = new ArrayList<>();
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM film" )
+                    "SELECT * FROM get_film" )
                     .toString());
             
             while ( resultSet.next()) {
@@ -40,7 +40,7 @@ public class FilmDAO extends DAO<Film, Integer> {
         
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM film WHERE film_id = " )
+                    "SELECT * FROM get_film WHERE film_id = " )
                     .append( id )
                     .append( ";" )
                     .toString() );

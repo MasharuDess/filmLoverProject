@@ -14,7 +14,7 @@ public class GenreDAO extends DAO<Genre, Integer> {
         ArrayList<Genre> genreArrayList = new ArrayList<>();
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM genre" )
+                    "SELECT * FROM get_genre" )
                     .toString());
         
             while ( resultSet.next()) {
@@ -33,7 +33,7 @@ public class GenreDAO extends DAO<Genre, Integer> {
     
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM genre WHERE genre_id = " )
+                    "SELECT * FROM get_genre WHERE genre_id = " )
                     .append( id )
                     .append( ";" )
                     .toString() );

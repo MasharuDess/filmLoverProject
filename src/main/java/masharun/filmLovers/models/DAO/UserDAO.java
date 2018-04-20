@@ -21,7 +21,7 @@ public class UserDAO extends DAO <User, String> {
         ArrayList<User> userArrayList = new ArrayList<>();
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM film_user" )
+                    "SELECT * FROM get_film_user" )
                     .toString());
             
             while ( resultSet.next()) {
@@ -45,7 +45,7 @@ public class UserDAO extends DAO <User, String> {
         
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM film_user WHERE login = '" )
+                    "SELECT * FROM get_film_user WHERE login = '" )
                     .append( id )
                     .append( "';" )
                     .toString() );
@@ -130,7 +130,7 @@ public class UserDAO extends DAO <User, String> {
 
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM film_user WHERE login= '" )
+                    "SELECT * FROM get_film_user WHERE login= '" )
                     .append( id )
                     .append( "' AND password= '" )
                     .append( password )

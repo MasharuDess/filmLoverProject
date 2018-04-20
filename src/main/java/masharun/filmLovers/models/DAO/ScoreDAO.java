@@ -14,7 +14,7 @@ public class ScoreDAO extends ExtendedDAO <Score, Integer, String> {
         ArrayList<Score> scoreArrayList = new ArrayList<>();
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM score_film_to_user" )
+                    "SELECT * FROM get_score_film_to_user" )
                     .toString());
             
             while ( resultSet.next()) {
@@ -73,7 +73,7 @@ public class ScoreDAO extends ExtendedDAO <Score, Integer, String> {
         
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM score_film_to_user WHERE film_id = " )
+                    "SELECT * FROM get_score_film_to_user WHERE film_id = " )
                     .append( id )
                     .append( " AND login = '" )
                     .append( secId )
@@ -95,11 +95,11 @@ public class ScoreDAO extends ExtendedDAO <Score, Integer, String> {
         try ( Statement statement = connection.createStatement() ) {
             System.err.println( id + " " + secId );
             statement.execute(
-                    new StringBuilder( "DELETE FROM score_film_to_user WHERE film_id = " )
-                            .append( id )
-                            .append( " AND login = '" )
+                    new StringBuilder( "SELECT * FROM delete_score('" )
                             .append( secId )
-                            .append( "';" )
+                            .append( "'," )
+                            .append( id )
+                            .append( ");" )
                             .toString()
             );
         }

@@ -39,6 +39,9 @@ public class FilmsForm implements Form {
     private JButton addFilmButton;
     private JButton setScoreButton;
     private JSlider scoreSlider;
+    private JTextField textField1;
+    private JButton actorButton;
+    private JPanel CardPanel;
     private JScrollPane scrollPane;
     private ArrayList<Film> filmList;
     
@@ -94,10 +97,10 @@ public class FilmsForm implements Form {
             textPane.setText( filmList.get( index ).getComment() );
         }
         if ( filmList.get( index ).getScore() != null ) {
-            userScore.setText( filmList.get( index ).getScore().toString() );
+            userScore.setText( String.format("%(.1f", filmList.get( index ).getScore()));
         }
         if ( filmList.get( index ).getCriticScore() != null ) {
-            criticScore.setText( filmList.get( index ).getCriticScore().toString() );
+            criticScore.setText( String.format("%(.1f", filmList.get( index ).getCriticScore()));
         }
         if ( filmList.get( index ).getBudget() != null ) {
             budget.setText( filmList.get( index ).getBudget().toString() );

@@ -7,14 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class CountryDAO extends DAO<Country, Integer > {
+public class CountryDAO extends DAO<Country, Integer> {
     
     @Override
     public ArrayList<Country> selectAll() throws SQLException {
         ArrayList<Country> countryArrayList = new ArrayList<>();
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM country" )
+                    "SELECT * FROM get_country" )
                     .toString());
         
             while ( resultSet.next()) {
@@ -33,7 +33,7 @@ public class CountryDAO extends DAO<Country, Integer > {
         
         try ( Statement statement = connection.createStatement() ) {
             ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM country WHERE country_id = " )
+                    "SELECT * FROM get_country WHERE country_id = " )
                     .append( id )
                     .append( ";" )
                     .toString() );
