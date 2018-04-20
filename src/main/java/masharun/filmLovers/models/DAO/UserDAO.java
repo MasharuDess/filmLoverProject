@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -42,14 +43,12 @@ public class UserDAO extends DAO <User, String> {
     @Override
     public User selectById( String id ) throws SQLException {
         User result = new User();
-        
-        try ( Statement statement = connection.createStatement() ) {
-            ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM get_film_user WHERE login = '" )
-                    .append( id )
-                    .append( "';" )
-                    .toString() );
-            
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement
+                    ( "SELECT * FROM get_film_user WHERE login = ?;" );
+            preparedStatement.setString( 1, id );
+            ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
                 result.setLogin( resultSet.getString( "login" ) );
                 result.setPassword( resultSet.getString( "password" ) );
@@ -58,85 +57,86 @@ public class UserDAO extends DAO <User, String> {
                 result.setSurname( resultSet.getString ( "surname" ) );
                 result.setBirthday( resultSet.getInt ( "birthday" ) );
             }
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
-        
         return result;
     }
     
     @Override
     public void deleteById( String id ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT public.delete_user('" )
-                            .append( id )
-                            .append( "');" )
-                            .toString()
-            );
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT delete_user(?)" );
+            preparedStatement.setString( 1, id );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
     }
     
     @Override
     public User insert( User entity ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT public.add_user('" )
-                            .append( entity.getLogin() )
-                            .append( "', '" )
-                            .append( entity.getPassword() )
-                            .append( "');" )
-                            .toString()
-            );
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT add_user(?,?)" );
+            preparedStatement.setString( 1, entity.getLogin() );
+            preparedStatement.setString( 2, entity.getPassword() );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
         return entity;
     }
     
     @Override
     public void update( User entity ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT public.edit_user('" )
-                            .append( entity.getName())
-                            .append( "','" )
-                            .append( entity.getSurname())
-                            .append( "'," )
-                            .append( entity.getBirthday())
-                            .append( ",'" )
-                            .append( entity.getLogin() )
-                            .append( "','")
-                            .append( entity.getPassword())
-                            .append( "','" )
-                            .append( entity.getRole())
-                            .append( "');" )
-                            .toString());
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT edit_user(?,?,?,?,?,?)" );
+            preparedStatement.setString( 1, entity.getName() );
+            preparedStatement.setString( 2, entity.getSurname() );
+            preparedStatement.setInt( 3, entity.getBirthday() );
+            preparedStatement.setString( 4, entity.getLogin() );
+            preparedStatement.setString( 5, entity.getPassword() );
+            preparedStatement.setString( 6, entity.getRole() );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
     }
     
     public void update ( String login, String password ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT public.edit_user( null, null, null, '" )
-                            .append( login )
-                            .append( "','")
-                            .append( password )
-                            .append( "','" )
-                            .append( "U" )
-                            .append( "');" )
-                            .toString());
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT edit_user(null,null,null,?,?,'U')" );
+            preparedStatement.setString( 1, login );
+            preparedStatement.setString( 2, password );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
     }
     
     public User getIfExists( String id, String password ) throws SQLException {
         User result = new User();
-
-        try ( Statement statement = connection.createStatement() ) {
-            ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM get_film_user WHERE login= '" )
-                    .append( id )
-                    .append( "' AND password= '" )
-                    .append( password )
-                    .append( "';" )
-                    .toString() );
-
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement
+                    ( "SELECT * FROM get_film_user WHERE login = ? AND password = ?;" );
+            preparedStatement.setString( 1, id );
+            preparedStatement.setString( 2, password );
+            ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
                 result.setLogin( resultSet.getString( "login" ) );
                 result.setPassword( resultSet.getString( "password" ) );
@@ -145,8 +145,11 @@ public class UserDAO extends DAO <User, String> {
                 result.setBirthday( resultSet.getInt( "birthday" ) );
                 result.setRole( resultSet.getString( "role" ) );
             }
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
-
         return result;
     }
 }

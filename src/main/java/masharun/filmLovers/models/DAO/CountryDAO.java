@@ -2,6 +2,7 @@ package masharun.filmLovers.models.DAO;
 
 import masharun.filmLovers.models.entities.Country;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,20 +31,21 @@ public class CountryDAO extends DAO<Country, Integer> {
     @Override
     public Country selectById( Integer id ) throws SQLException {
         Country result = new Country();
-        
-        try ( Statement statement = connection.createStatement() ) {
-            ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM get_country WHERE country_id = " )
-                    .append( id )
-                    .append( ";" )
-                    .toString() );
-        
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement
+                    ( "SELECT * FROM get_country WHERE country_id = ?;" );
+            preparedStatement.setInt( 1, id );
+            ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
                 result.setName( resultSet.getString( "country_name" ) );
                 result.setCountryId( resultSet.getInt( "country_id" ) );
             }
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
-        
         return result;
     }
     

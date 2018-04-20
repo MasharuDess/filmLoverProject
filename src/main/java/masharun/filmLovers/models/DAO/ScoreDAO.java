@@ -2,6 +2,7 @@ package masharun.filmLovers.models.DAO;
 
 import masharun.filmLovers.models.entities.Score;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -44,19 +45,18 @@ public class ScoreDAO extends ExtendedDAO <Score, Integer, String> {
     
     @Override
     public Score insert( Score entity ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT add_score('" )
-                            .append( entity.getLogin() )
-                            .append( "', " )
-                            .append( entity.getFilmId() )
-                            .append( ", " )
-                            .append( entity.getScore() )
-                            .append( ",'" )
-                            .append( entity.getRole() )
-                            .append( "');" )
-                            .toString()
-            );
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT add_score(?,?,?,?)" );
+            preparedStatement.setString( 1, entity.getLogin() );
+            preparedStatement.setInt( 2, entity.getFilmId() );
+            preparedStatement.setDouble( 3, entity.getScore() );
+            preparedStatement.setString( 4, entity.getRole() );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
         return entity;
     }
@@ -70,38 +70,41 @@ public class ScoreDAO extends ExtendedDAO <Score, Integer, String> {
     @Override
     public Score selectById( Integer id, String secId ) throws SQLException {
         Score result = new Score();
-        
-        try ( Statement statement = connection.createStatement() ) {
-            ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM get_score_film_to_user WHERE film_id = " )
-                    .append( id )
-                    .append( " AND login = '" )
-                    .append( secId )
-                    .append( "';" )
-                    .toString() );
-        
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement
+                    ( "SELECT * FROM get_score_film_to_user WHERE film_id = ? AND login = ?;" );
+            preparedStatement.setInt( 1, id );
+            preparedStatement.setString( 2, secId );
+            ResultSet resultSet = preparedStatement.executeQuery();
+    
             while( resultSet.next() ) {
                 result.setFilmId( resultSet.getInt( "film_id" ) );
                 result.setLogin( resultSet.getString( "login" ) );
                 result.setRole( resultSet.getString( "role" ) );
                 result.setScore( resultSet.getDouble ( "score" ) );
             }
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
+        
         return result;
     }
     
     @Override
     public void deleteById( Integer id, String secId ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            System.err.println( id + " " + secId );
-            statement.execute(
-                    new StringBuilder( "SELECT * FROM delete_score('" )
-                            .append( secId )
-                            .append( "'," )
-                            .append( id )
-                            .append( ");" )
-                            .toString()
-            );
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT delete_score(?,?)" );
+            preparedStatement.setString( 1, secId );
+            preparedStatement.setInt( 2, id );
+            preparedStatement.execute();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
     }
 }

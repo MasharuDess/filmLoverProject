@@ -2,6 +2,7 @@ package masharun.filmLovers.models.DAO;
 
 import masharun.filmLovers.models.entities.Film;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,14 +38,12 @@ public class FilmDAO extends DAO<Film, Integer> {
     @Override
     public Film selectById( Integer id ) throws SQLException {
         Film result = new Film();
-        
-        try ( Statement statement = connection.createStatement() ) {
-            ResultSet resultSet = statement.executeQuery( new StringBuilder(
-                    "SELECT * FROM get_film WHERE film_id = " )
-                    .append( id )
-                    .append( ";" )
-                    .toString() );
-            
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement
+                    ( "SELECT * FROM get_film WHERE film_id = ?;" );
+            preparedStatement.setInt( 1, id );
+            ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
                 result.setName( resultSet.getString( "name" ) );
                 result.setBudget( resultSet.getInt( "budget" ) );
@@ -56,58 +55,61 @@ public class FilmDAO extends DAO<Film, Integer> {
                 result.setReleaseDate( resultSet.getDate ( "release_date" ) );
                 result.setScore( resultSet.getDouble ( "score" ) );
             }
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
-        
         return result;
     }
     
     @Override
     public void deleteById( Integer id ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT public.delete_film(" )
-                            .append( id )
-                            .append( ");" )
-                            .toString()
-            );
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT delete_film(?);" );
+            preparedStatement.setInt( 1, id );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
     }
     
     @Override
     public Film insert( Film entity ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT public.add_film('" )
-                            .append( entity.getName() )
-                            .append( "', " )
-                            .append( entity.getGenreId() )
-                            .append( ");" )
-                            .toString()
-            );
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT add_film(?,?)" );
+            preparedStatement.setString( 1, entity.getName() );
+            preparedStatement.setInt( 2, entity.getGenreId() );
+            preparedStatement.executeQuery();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
         return entity;
     }
     
     @Override
     public void update( Film entity ) throws SQLException {
-        try ( Statement statement = connection.createStatement() ) {
-            statement.executeQuery(
-                    new StringBuilder( "SELECT edit_film(" )
-                            .append( entity.getReleaseDate() == null ? null: "'" + entity.getReleaseDate() + "'")
-                            .append( "," )
-                            .append( entity.getBudget())
-                            .append( ",'" )
-                            .append( entity.getComment())
-                            .append( "'," )
-                            .append( entity.getGenreId() )
-                            .append( ",")
-                            .append( entity.getCountryId())
-                            .append( ",'" )
-                            .append( entity.getName())
-                            .append( "'," )
-                            .append( entity.getFilmId() )
-                            .append( ");" )
-                            .toString());
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement( "SELECT edit_film(?,?,?,?,?,?,?)" );
+            preparedStatement.setDate( 1,
+                    entity.getReleaseDate() == null ? null: entity.getReleaseDate());
+            preparedStatement.setInt( 2, entity.getBudget() );
+            preparedStatement.setString( 3, entity.getComment() );
+            preparedStatement.setInt( 4, entity.getGenreId() );
+            preparedStatement.setString( 5, entity.getName() );
+            preparedStatement.setInt( 6, entity.getFilmId() );
+            preparedStatement.execute();
+        } finally {
+            if ( preparedStatement != null ) {
+                preparedStatement.close();
+            }
         }
     }
 }
