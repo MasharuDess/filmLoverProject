@@ -51,7 +51,6 @@ public class FilmsForm implements Form {
         init();
         initListeners();
     }
-    
     private void init() {
         try {
             filmList = new FilmDAO().selectAll();
@@ -110,7 +109,8 @@ public class FilmsForm implements Form {
         }
         if ( filmList.get( index ).getCountryId() != null ) {
             try {
-                countryLabel.setText( new CountryDAO().selectById( filmList.get( index ).getCountryId() ).getName() );
+                countryLabel.setText( new CountryDAO()
+                        .selectById( filmList.get( index ).getCountryId() ).getName() );
             } catch( SQLException e ) {
                 OptionPane.showMessage( "Ошибка загрузки данных о стране", "Ошибка" );
                 System.err.println( e.toString() );
@@ -120,7 +120,7 @@ public class FilmsForm implements Form {
             try {
                 genre.setText( new GenreDAO().selectById( filmList.get( index ).getGenreId() ).getGenre() );
             } catch( SQLException e ) {
-                OptionPane.showMessage( "Ошибка загрузки данных о жанреу", "Ошибка" );
+                OptionPane.showMessage( "Ошибка загрузки данных о жанре", "Ошибка" );
                 System.err.println( e.toString() );
             }
         }
@@ -184,8 +184,13 @@ public class FilmsForm implements Form {
             try {
                 new FilmDAO().deleteById( filmList.get( filmComboBox.getSelectedIndex() ).getFilmId() );
                 filmList.remove( filmComboBox.getSelectedIndex() );
-                filmComboBox.setSelectedIndex( filmComboBox.getSelectedIndex() - 1 );
-                filmComboBox.removeItemAt( filmComboBox.getSelectedIndex() + 1 );
+                if ( filmComboBox.getSelectedIndex() == 0 ) {
+                    filmComboBox.setSelectedIndex( filmComboBox.getSelectedIndex() + 1 );
+                    filmComboBox.removeItemAt( filmComboBox.getSelectedIndex() - 1 );
+                } else {
+                    filmComboBox.setSelectedIndex( filmComboBox.getSelectedIndex() - 1 );
+                    filmComboBox.removeItemAt( filmComboBox.getSelectedIndex() + 1 );
+                }
                 fillNote( filmComboBox.getSelectedIndex() );
                 filmComboBox.updateUI();
             } catch ( SQLException e ) {
@@ -212,7 +217,10 @@ public class FilmsForm implements Form {
     
     @Override
     public void reinit() {
-        Main.setTitle( "Фильма" );
+        Main.setTitle( "Фильмы" );
+        if ( filmComboBox.getItemCount() < filmList.size() ) {
+            filmComboBox.addItem( filmList.get( filmList.size()).getName() );
+        }
         filmComboBox.updateUI();
         fillNote( filmComboBox.getSelectedIndex() );
     }

@@ -84,7 +84,9 @@ public class FilmDAO extends DAO<Film, Integer> {
             preparedStatement = connection.prepareStatement( "SELECT add_film(?,?)" );
             preparedStatement.setString( 1, entity.getName() );
             preparedStatement.setInt( 2, entity.getGenreId() );
-            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            entity.setFilmId( resultSet.getInt( 1 ) );
         } finally {
             if ( preparedStatement != null ) {
                 preparedStatement.close();
@@ -103,8 +105,9 @@ public class FilmDAO extends DAO<Film, Integer> {
             preparedStatement.setInt( 2, entity.getBudget() );
             preparedStatement.setString( 3, entity.getComment() );
             preparedStatement.setInt( 4, entity.getGenreId() );
-            preparedStatement.setString( 5, entity.getName() );
-            preparedStatement.setInt( 6, entity.getFilmId() );
+            preparedStatement.setInt( 5, entity.getCountryId() );
+            preparedStatement.setString( 6, entity.getName() );
+            preparedStatement.setInt( 7, entity.getFilmId() );
             preparedStatement.execute();
         } finally {
             if ( preparedStatement != null ) {

@@ -75,6 +75,7 @@ public class FilmEditForm implements Form {
             for ( Country country : countryList ) {
                 countryComboBox.addItem( country.getName() );
             }
+            countryComboBox.setSelectedIndex( film.getCountryId());
         } catch ( SQLException e ) {
             OptionPane.showMessage( "Ошибка загрузки списка стран", "Ошибка" );
             System.err.println( e.toString() );
@@ -85,6 +86,7 @@ public class FilmEditForm implements Form {
             for ( Genre genre : countryList ) {
                 genreComboBox.addItem( genre.getGenre() );
             }
+            genreComboBox.setSelectedIndex( film.getGenreId());
         } catch ( SQLException e ) {
             OptionPane.showMessage( "Ошибка загрузки списка жанров", "Ошибка" );
             System.err.println( e.toString() );
@@ -97,13 +99,13 @@ public class FilmEditForm implements Form {
             if ( !nameField.getText().equals( "" ) ) {
                 film = new Film();
                 film.setName( nameField.getText() );
-                film.setGenreId( genreComboBox.getSelectedIndex() + 1 );
-                film.setCountryId( countryComboBox.getSelectedIndex() + 3 );
+                film.setGenreId( genreComboBox.getSelectedIndex() );
+                film.setCountryId( countryComboBox.getSelectedIndex() );
                 try {
                     if( !budgetField.getText().equals( "" ) ) {
                         film.setBudget( Integer.parseInt( budgetField.getText() ) );
                     } else {
-                        film.setBudget( null );
+                        film.setBudget( 1 );
                     }
                 } catch( NumberFormatException e ) {
                     OptionPane.showMessage( "Неверный формат числа", "Ошибка" );
@@ -123,8 +125,10 @@ public class FilmEditForm implements Form {
                 film.setComment( commentField.getText() );
                 FilmDAO filmDAO = new FilmDAO();
                 try {
-                    filmDAO.insert( film );
+                    film.setFilmId( filmDAO.insert( film ).getFilmId() );
                     filmDAO.update( film );
+                    OptionPane.showMessage( "Вы успешно добавили фильм", "Поздравляем" );
+                    Main.getMainForm().setLastForm();
                 } catch( SQLException e ) {
                     OptionPane.showMessage( "Ошибка добавления фильма", "Ошибка" );
                     System.err.println( e.toString() );
@@ -141,8 +145,8 @@ public class FilmEditForm implements Form {
         footerListeners();
         editButton.addActionListener( eventListener -> {
             film.setName( nameField.getText() );
-            film.setGenreId( genreComboBox.getSelectedIndex() + 1 );
-            film.setCountryId( countryComboBox.getSelectedIndex() + 3 );
+            film.setGenreId( genreComboBox.getSelectedIndex() );
+            film.setCountryId( countryComboBox.getSelectedIndex() );
             try {
                 film.setBudget( Integer.parseInt( budgetField.getText() ) );
             } catch ( NumberFormatException e ) {

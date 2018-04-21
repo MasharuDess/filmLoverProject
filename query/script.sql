@@ -138,12 +138,6 @@ CREATE TABLE user_role
   name VARCHAR(64)
 );
 
-CREATE VIEW get_country AS
-  SELECT
-    country.country_name,
-    country.country_id
-  FROM country;
-
 CREATE VIEW get_film AS
   SELECT
     film.release_date,
@@ -164,12 +158,6 @@ CREATE VIEW get_filmworkers_role AS
     filmworkers_role.filmworker_id,
     filmworkers_role.film_id
   FROM filmworkers_role;
-
-CREATE VIEW get_genre AS
-  SELECT
-    genre.genre,
-    genre.genre_id
-  FROM genre;
 
 CREATE VIEW get_role AS
   SELECT
@@ -200,6 +188,20 @@ CREATE VIEW get_film_user AS
     film_user.password,
     film_user.role
   FROM film_user;
+
+CREATE VIEW get_country AS
+  SELECT
+    country.country_name,
+    country.country_id
+  FROM country
+  ORDER BY country.country_id;
+
+CREATE VIEW get_genre AS
+  SELECT
+    genre.genre,
+    genre.genre_id
+  FROM genre
+  ORDER BY genre.genre_id;
 
 CREATE FUNCTION add_user(username CHARACTER VARYING, pass CHARACTER VARYING)
   RETURNS CHARACTER VARYING
@@ -473,40 +475,6 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION edit_film(my_release_date DATE, my_budget INTEGER, my_comment CHARACTER VARYING, my_genre_id INTEGER,
-                          my_country_id   INTEGER, my_name CHARACTER VARYING, my_film_id INTEGER)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  UPDATE public.film
-  SET (release_date, budget, comment, genre_id, country_id, name) =
-  (my_release_date, my_budget, my_comment, my_genre_id, my_country_id, my_name)
-  WHERE film_id = my_film_id;
-
-  EXCEPTION
-  WHEN not_null_violation
-    THEN
-      RAISE EXCEPTION 'Field cant be NULL';
-      RETURN;
-
-  WHEN unique_violation
-    THEN
-      RAISE EXCEPTION 'Username must be unique';
-      RETURN;
-
-  WHEN check_violation
-    THEN
-      RAISE EXCEPTION 'Wrong format of field';
-      RETURN;
-
-  WHEN OTHERS
-    THEN
-      RAISE EXCEPTION 'Unknown error';
-      RETURN;
-END;
-$$;
-
 CREATE FUNCTION add_score(user_name CHARACTER VARYING, my_film_id INTEGER, my_score DOUBLE PRECISION,
                           my_role   CHARACTER VARYING)
   RETURNS VOID
@@ -592,6 +560,40 @@ BEGIN
     )
     WHERE film_id = my_film_id;
   END IF;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
+CREATE FUNCTION edit_film(my_release_date DATE, my_budget INTEGER, my_comment CHARACTER VARYING, my_genre_id INTEGER,
+                          my_country_id   INTEGER, my_name CHARACTER VARYING, my_film_id INTEGER)
+  RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  UPDATE public.film
+  SET (release_date, budget, comment, genre_id, country_id, name) =
+  (my_release_date, my_budget, my_comment, my_genre_id, my_country_id, my_name)
+  WHERE film_id = my_film_id;
 
   EXCEPTION
   WHEN not_null_violation

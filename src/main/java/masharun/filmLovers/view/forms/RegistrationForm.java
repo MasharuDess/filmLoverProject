@@ -38,6 +38,7 @@ public class RegistrationForm implements Form {
     
     public RegistrationForm() {
         Main.setTitle( "Регистрация" );
+        birthdayComboBox.setSelectedIndex( -1 );
         initListeners();
     }
     
@@ -57,13 +58,15 @@ public class RegistrationForm implements Form {
                     } else if ( !passwordField.getText().equals( repeatPasswordField.getText() ) ) {
                         OptionPane.showMessage( "Неверное повторное введение пароля", "Ошибка" );
                     } else {
-    
                         user.setLogin( loginField.getText() );
                         user.setRole( "U" );
                         user.setSurname( surnameField.getText() );
                         user.setName( nameField.getText() );
-                        user.setBirthday( CURRENT_YEAR - Integer.parseInt( birthdayComboBox.getItemAt(
-                                birthdayComboBox.getSelectedIndex() ).toString()));
+                        if ( birthdayComboBox.getSelectedItem() != null ) {
+                            user.setBirthday( CURRENT_YEAR - Integer.parseInt( birthdayComboBox.getItemAt(                                      birthdayComboBox.getSelectedIndex() ).toString() ) );
+                        } else {
+                            user.setBirthday( 1 );
+                        }
                         user.setPassword( Hasher.getSecurePassword( passwordField.getText()) );
                         userDAO.insert( user );
                         userDAO.update( user );
