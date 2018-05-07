@@ -1,144 +1,139 @@
-CREATE TABLE country
+-- we don't know how to generate database filmLoverDB (class Database) :(
+create table country
 (
-  country_id   SERIAL      NOT NULL
-    CONSTRAINT country_pkey
-    PRIMARY KEY,
-  country_name VARCHAR(64) NOT NULL
-    CONSTRAINT country_name
-    CHECK ((country_name) :: TEXT ~ '(^([ A-Za-zА-Яа-я0-9-]+)$)' :: TEXT)
+  country_id   serial      not null
+    constraint country_pkey
+    primary key,
+  country_name varchar(64) not null
+    constraint country_name
+    check ((country_name) :: text ~ '(^([ A-Za-zА-Яа-я0-9-]+)$)' :: text)
 );
 
-CREATE TABLE film
+create table filmworker
 (
-  release_date DATE,
-  budget       INTEGER
-    CONSTRAINT budget
-    CHECK (budget > 0),
-  score        DOUBLE PRECISION
-    CONSTRAINT score
-    CHECK ((score >= (0) :: DOUBLE PRECISION) AND (score <= (10) :: DOUBLE PRECISION)),
-  critic_score DOUBLE PRECISION,
-  comment      VARCHAR(256),
-  film_id      SERIAL                                               NOT NULL
-    CONSTRAINT film_pkey
-    PRIMARY KEY,
-  genre_id     INTEGER                                              NOT NULL,
-  country_id   INTEGER
-    CONSTRAINT r_29
-    REFERENCES country,
-  name         VARCHAR(256) DEFAULT 'Filmname' :: CHARACTER VARYING NOT NULL
-    CONSTRAINT name
-    CHECK ((name) :: TEXT ~ '(^([.'' A-Za-zА-Яа-я0-9-]+)$)' :: TEXT),
-  comments     JSON,
-  CONSTRAINT critic_score
-  CHECK ((critic_score >= (0) :: DOUBLE PRECISION) AND (score <= (10) :: DOUBLE PRECISION))
+  name          varchar(64) not null
+    constraint name
+    check ((name) :: text ~ '(^([ A-Za-zА-Яа-я-]+)$)' :: text),
+  surname       varchar(64) not null
+    constraint surname
+    check ((surname) :: text ~ '(^([ A-Za-zА-Яа-я-]+)$)' :: text),
+  birthday      integer
+    constraint birthday
+    check (birthday >= 0),
+  filmworker_id serial      not null
+    constraint filmworker_pkey
+    primary key,
+  country_id    integer
+    constraint r_28
+    references country
 );
 
-CREATE TABLE filmworker
+create table genre
 (
-  name          VARCHAR(64) NOT NULL
-    CONSTRAINT name
-    CHECK ((name) :: TEXT ~ '(^([ A-Za-zА-Яа-я-]+)$)' :: TEXT),
-  surname       VARCHAR(64) NOT NULL
-    CONSTRAINT surname
-    CHECK ((surname) :: TEXT ~ '(^([ A-Za-zА-Яа-я-]+)$)' :: TEXT),
-  birthday      INTEGER
-    CONSTRAINT birthday
-    CHECK (birthday >= 0),
-  filmworker_id SERIAL      NOT NULL
-    CONSTRAINT filmworker_pkey
-    PRIMARY KEY,
-  country_id    INTEGER
-    CONSTRAINT r_28
-    REFERENCES country
+  genre_id serial not null
+    constraint genre_pkey
+    primary key,
+  genre    varchar(64)
+    constraint genre
+    check ((genre) :: text ~ '(^([ A-Za-zА-Яа-я0-9-]+)$)' :: text)
 );
 
-CREATE TABLE filmworkers_role
+create table film
 (
-  role_id       INTEGER NOT NULL,
-  filmworker_id INTEGER NOT NULL
-    CONSTRAINT r_17
-    REFERENCES filmworker,
-  film_id       INTEGER NOT NULL
-    CONSTRAINT r_18
-    REFERENCES film,
-  CONSTRAINT filmworkers_role_pkey
-  PRIMARY KEY (role_id, filmworker_id, film_id)
+  release_date date,
+  budget       integer
+    constraint budget
+    check (budget > 0),
+  score        double precision
+    constraint score
+    check ((score >= (0) :: double precision) AND (score <= (10) :: double precision)),
+  critic_score double precision,
+  comment      varchar(256),
+  film_id      serial                                               not null
+    constraint film_pkey
+    primary key,
+  genre_id     integer                                              not null
+    constraint r_26
+    references genre,
+  country_id   integer
+    constraint r_29
+    references country,
+  name         varchar(256) default 'Filmname' :: character varying not null
+    constraint name
+    check ((name) :: text ~ '(^([.'' A-Za-zА-Яа-я0-9-]+)$)' :: text),
+  review       json,
+  constraint critic_score
+  check ((critic_score >= (0) :: double precision) AND (score <= (10) :: double precision))
 );
 
-CREATE TABLE genre
+create table role
 (
-  genre_id SERIAL NOT NULL
-    CONSTRAINT genre_pkey
-    PRIMARY KEY,
-  genre    VARCHAR(64)
-    CONSTRAINT genre
-    CHECK ((genre) :: TEXT ~ '(^([ A-Za-zА-Яа-я0-9-]+)$)' :: TEXT)
+  role_name varchar(64) not null
+    constraint role_name
+    check ((role_name) :: text ~ '(^([ A-Za-zА-Яа-я-]+)$)' :: text),
+  role_id   serial      not null
+    constraint role_pkey
+    primary key
 );
 
-ALTER TABLE film
-  ADD CONSTRAINT r_26
-FOREIGN KEY (genre_id) REFERENCES genre;
-
-CREATE TABLE role
+create table filmworkers_role
 (
-  role_name VARCHAR(64) NOT NULL
-    CONSTRAINT role_name
-    CHECK ((role_name) :: TEXT ~ '(^([ A-Za-zА-Яа-я-]+)$)' :: TEXT),
-  role_id   SERIAL      NOT NULL
-    CONSTRAINT role_pkey
-    PRIMARY KEY
+  role_id       integer not null
+    constraint r_16
+    references role,
+  filmworker_id integer not null
+    constraint r_17
+    references filmworker,
+  film_id       integer not null
+    constraint r_18
+    references film,
+  constraint filmworkers_role_pkey
+  primary key (role_id, filmworker_id, film_id)
 );
 
-ALTER TABLE filmworkers_role
-  ADD CONSTRAINT r_16
-FOREIGN KEY (role_id) REFERENCES role;
-
-CREATE TABLE score_film_to_user
+create table film_user
 (
-  film_id INTEGER     NOT NULL
-    CONSTRAINT r_21
-    REFERENCES film,
-  score   INTEGER     NOT NULL
-    CONSTRAINT score
-    CHECK ((score >= 0) AND (score <= 10)),
-  login   VARCHAR(64) NOT NULL,
-  role    VARCHAR(20) NOT NULL,
-  CONSTRAINT score_film_to_user_pkey
-  PRIMARY KEY (film_id, login)
+  name     varchar(64),
+  surname  varchar(64),
+  birthday integer
+    constraint birthday
+    check (birthday > 0),
+  login    varchar(32)                                 not null
+    constraint film_user_pkey
+    primary key
+    constraint login
+    check ((login) :: text ~ '(^([A-Za-zА-Яа-я0-9]+)$)' :: text),
+  password varchar(128)                                not null
+    constraint password
+    check ((password) :: text ~ '(^([A-Za-zА-Яа-я0-9]+)$)' :: text),
+  role     varchar(1) default 'U' :: character varying not null
 );
 
-CREATE TABLE film_user
+create table score_film_to_user
 (
-  name     VARCHAR(64),
-  surname  VARCHAR(64),
-  birthday INTEGER
-    CONSTRAINT birthday
-    CHECK (birthday > 0),
-  login    VARCHAR(32)                                 NOT NULL
-    CONSTRAINT film_user_pkey
-    PRIMARY KEY
-    CONSTRAINT login
-    CHECK ((login) :: TEXT ~ '(^([A-Za-zА-Яа-я0-9]+)$)' :: TEXT),
-  password VARCHAR(128)                                NOT NULL
-    CONSTRAINT password
-    CHECK ((password) :: TEXT ~ '(^([A-Za-zА-Яа-я0-9]+)$)' :: TEXT),
-  role     VARCHAR(1) DEFAULT 'U' :: CHARACTER VARYING NOT NULL
+  film_id integer     not null
+    constraint r_21
+    references film,
+  score   integer     not null
+    constraint score
+    check ((score >= 0) AND (score <= 10)),
+  login   varchar(64) not null
+    constraint r_22
+    references film_user,
+  role    varchar(20) not null,
+  constraint score_film_to_user_pkey
+  primary key (film_id, login)
 );
 
-ALTER TABLE score_film_to_user
-  ADD CONSTRAINT r_22
-FOREIGN KEY (login) REFERENCES film_user;
-
-CREATE TABLE user_role
+create table user_role
 (
-  role VARCHAR(1) NOT NULL
-    CONSTRAINT user_role_role_pk
-    PRIMARY KEY,
-  name VARCHAR(64)
+  role varchar(1) not null
+    constraint user_role_role_pk
+    primary key,
+  name varchar(64)
 );
 
-CREATE VIEW get_film AS
+create view get_film as
   SELECT
     film.release_date,
     film.budget,
@@ -152,20 +147,21 @@ CREATE VIEW get_film AS
     film.comments
   FROM film;
 
-CREATE VIEW get_filmworkers_role AS
+create view get_filmworkers_role as
   SELECT
     filmworkers_role.role_id,
     filmworkers_role.filmworker_id,
     filmworkers_role.film_id
   FROM filmworkers_role;
 
-CREATE VIEW get_role AS
+create view get_role as
   SELECT
     role.role_name,
     role.role_id
-  FROM role;
+  FROM role
+  ORDER BY role.role_id;
 
-CREATE VIEW get_score_film_to_user AS
+create view get_score_film_to_user as
   SELECT
     score_film_to_user.film_id,
     score_film_to_user.score,
@@ -173,13 +169,13 @@ CREATE VIEW get_score_film_to_user AS
     score_film_to_user.role
   FROM score_film_to_user;
 
-CREATE VIEW get_user_role AS
+create view get_user_role as
   SELECT
     user_role.role,
     user_role.name
   FROM user_role;
 
-CREATE VIEW get_film_user AS
+create view get_film_user as
   SELECT
     film_user.name,
     film_user.surname,
@@ -189,24 +185,33 @@ CREATE VIEW get_film_user AS
     film_user.role
   FROM film_user;
 
-CREATE VIEW get_country AS
+create view get_country as
   SELECT
     country.country_name,
     country.country_id
   FROM country
   ORDER BY country.country_id;
 
-CREATE VIEW get_genre AS
+create view get_genre as
   SELECT
     genre.genre,
     genre.genre_id
   FROM genre
   ORDER BY genre.genre_id;
 
-CREATE FUNCTION add_user(username CHARACTER VARYING, pass CHARACTER VARYING)
-  RETURNS CHARACTER VARYING
-LANGUAGE plpgsql
-AS $$
+create view get_filmworker as
+  SELECT
+    filmworker.name,
+    filmworker.surname,
+    filmworker.birthday,
+    filmworker.filmworker_id,
+    filmworker.country_id
+  FROM filmworker;
+
+create function add_user(username character varying, pass character varying)
+  returns character varying
+language plpgsql
+as $$
 DECLARE id VARCHAR(64);
 
 BEGIN
@@ -239,10 +244,10 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION add_film(film_name CHARACTER VARYING, genre INTEGER)
-  RETURNS INTEGER
-LANGUAGE plpgsql
-AS $$
+create function add_film(film_name character varying, genre integer)
+  returns integer
+language plpgsql
+as $$
 DECLARE id INTEGER;
 
 BEGIN
@@ -275,46 +280,10 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION add_filmworker(filmworker_name CHARACTER VARYING, filmworker_surname CHARACTER VARYING)
-  RETURNS INTEGER
-LANGUAGE plpgsql
-AS $$
-DECLARE id INTEGER;
-
-BEGIN
-  INSERT INTO public.filmworker (name, surname)
-  VALUES (filmworker_name, filmworker_surname)
-  RETURNING filmworker_id
-    INTO id;
-  RETURN id;
-
-  EXCEPTION
-  WHEN not_null_violation
-    THEN
-      RAISE EXCEPTION 'Field cant be NULL';
-      RETURN NULL;
-
-  WHEN unique_violation
-    THEN
-      RAISE EXCEPTION 'Username must be unique';
-      RETURN NULL;
-
-  WHEN check_violation
-    THEN
-      RAISE EXCEPTION 'Wrong format of field';
-      RETURN NULL;
-
-  WHEN OTHERS
-    THEN
-      RAISE EXCEPTION 'Unknown error';
-      RETURN NULL;
-END;
-$$;
-
-CREATE FUNCTION delete_user(username CHARACTER VARYING)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
+create function delete_user(username character varying)
+  returns void
+language plpgsql
+as $$
 BEGIN
 
   DELETE FROM public.film_user
@@ -343,10 +312,10 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION delete_film(my_film_id INTEGER)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
+create function delete_film(my_film_id integer)
+  returns void
+language plpgsql
+as $$
 BEGIN
 
   DELETE FROM public.film
@@ -375,77 +344,11 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION delete_filmworker(my_filmworker_id INTEGER)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
-BEGIN
-
-  DELETE FROM public.filmworker
-  WHERE filmworker_id = my_filmworker_id;
-
-  EXCEPTION
-  WHEN not_null_violation
-    THEN
-      RAISE EXCEPTION 'Field cant be NULL';
-      RETURN;
-
-  WHEN unique_violation
-    THEN
-      RAISE EXCEPTION 'Username must be unique';
-      RETURN;
-
-  WHEN check_violation
-    THEN
-      RAISE EXCEPTION 'Wrong format of field';
-      RETURN;
-
-  WHEN OTHERS
-    THEN
-      RAISE EXCEPTION 'Unknown error';
-      RETURN;
-END;
-$$;
-
-CREATE FUNCTION edit_filmworker(my_name       CHARACTER VARYING, my_surname CHARACTER VARYING, my_birthday INTEGER,
-                                my_country_id CHARACTER VARYING, my_filmworker_id INTEGER)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  UPDATE public.film_filmworker
-  SET (name, surname, birthday, country_id) =
-  (my_name, my_surname, my_birthday, my_country_id)
-  WHERE filmworker_id = my_filmworker_id;
-
-  EXCEPTION
-  WHEN not_null_violation
-    THEN
-      RAISE EXCEPTION 'Field cant be NULL';
-      RETURN;
-
-  WHEN unique_violation
-    THEN
-      RAISE EXCEPTION 'Username must be unique';
-      RETURN;
-
-  WHEN check_violation
-    THEN
-      RAISE EXCEPTION 'Wrong format of field';
-      RETURN;
-
-  WHEN OTHERS
-    THEN
-      RAISE EXCEPTION 'Unknown error';
-      RETURN;
-END;
-$$;
-
-CREATE FUNCTION edit_user(my_name  CHARACTER VARYING, my_surname CHARACTER VARYING, my_birthday INTEGER,
-                          username CHARACTER VARYING, pass CHARACTER VARYING, my_role CHARACTER VARYING)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
+create function edit_user(my_name  character varying, my_surname character varying, my_birthday integer,
+                          username character varying, pass character varying, my_role character varying)
+  returns void
+language plpgsql
+as $$
 BEGIN
   UPDATE public.film_user
   SET (password, name, surname, role, birthday) =
@@ -475,11 +378,11 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION add_score(user_name CHARACTER VARYING, my_film_id INTEGER, my_score DOUBLE PRECISION,
-                          my_role   CHARACTER VARYING)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
+create function add_score(user_name character varying, my_film_id integer, my_score double precision,
+                          my_role   character varying)
+  returns void
+language plpgsql
+as $$
 DECLARE id INTEGER;
 
 BEGIN
@@ -528,10 +431,10 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION delete_score(user_name CHARACTER VARYING, my_film_id INTEGER)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
+create function delete_score(user_name character varying, my_film_id integer)
+  returns void
+language plpgsql
+as $$
 DECLARE id INTEGER;
 
 BEGIN
@@ -584,11 +487,11 @@ BEGIN
 END;
 $$;
 
-CREATE FUNCTION edit_film(my_release_date DATE, my_budget INTEGER, my_comment CHARACTER VARYING, my_genre_id INTEGER,
-                          my_country_id   INTEGER, my_name CHARACTER VARYING, my_film_id INTEGER)
-  RETURNS VOID
-LANGUAGE plpgsql
-AS $$
+create function edit_film(my_release_date date, my_budget integer, my_comment character varying, my_genre_id integer,
+                          my_country_id   integer, my_name character varying, my_film_id integer)
+  returns void
+language plpgsql
+as $$
 BEGIN
   UPDATE public.film
   SET (release_date, budget, comment, genre_id, country_id, name) =
@@ -617,4 +520,177 @@ BEGIN
       RETURN;
 END;
 $$;
+
+create function edit_filmworker(my_name       character varying, my_surname character varying, my_birthday integer,
+                                my_country_id integer, my_filmworker_id integer)
+  returns void
+language plpgsql
+as $$
+BEGIN
+  UPDATE public.filmworker
+  SET (name, surname, birthday, country_id) =
+  (my_name, my_surname, my_birthday, my_country_id)
+  WHERE filmworker_id = my_filmworker_id;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
+create function delete_filmworkers_role(my_role_id integer, my_filmworker_id integer, my_film_id integer)
+  returns void
+language plpgsql
+as $$
+BEGIN
+
+  DELETE FROM public.filmworkers_role
+  WHERE filmworker_id = my_filmworker_id
+        AND role_id = my_role_id
+        AND film_id = my_film_id;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
+create function delete_filmworker(my_filmworker_id integer)
+  returns void
+language plpgsql
+as $$
+BEGIN
+
+  DELETE FROM public.filmworkers_role
+  WHERE filmworker_id = my_filmworker_id;
+
+  DELETE FROM public.filmworker
+  WHERE filmworker_id = my_filmworker_id;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
+create function add_filmworker(filmworker_name     character varying, filmworker_surname character varying,
+                               filmworker_birthday integer, filmworker_country_id integer)
+  returns integer
+language plpgsql
+as $$
+DECLARE id INTEGER;
+
+BEGIN
+  INSERT INTO public.filmworker (name, surname, birthday, country_id)
+  VALUES (filmworker_name, filmworker_surname, filmworker_birthday, filmworker_country_id)
+  RETURNING filmworker_id
+    INTO id;
+  RETURN id;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN NULL;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN NULL;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN NULL;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN NULL;
+END;
+$$;
+
+create function add_filmworkers_role(my_role_id integer, my_filmworker_id integer, my_film_id integer)
+  returns void
+language plpgsql
+as $$
+BEGIN
+
+  INSERT INTO public.filmworkers_role (role_id, filmworker_id, film_id)
+  VALUES (my_role_id, my_filmworker_id, my_film_id);
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
 

@@ -12,7 +12,10 @@ In this project i used PostgreSQL like DBMS and Java like programming language.
 * Tried to work with NoSQL. Сomments to the films made with JSON;
 * Learned how to use diagrams in Java.
 
-#### Report
+#### Report:
 Work with the project gave me some new experience in working with my language and DBMS.
 I hope, in future i'll learn new opportunities and return to work with that project
 to make it better. Thank you.
+
+#### Attention:
+Don't forget to change information in configs.

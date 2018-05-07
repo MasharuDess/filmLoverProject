@@ -1,8 +1,8 @@
 masharun.filmLovers
-masharun.filmLovers.connection
-masharun.filmLovers.models
-masharun.filmLovers.models.DAO
-masharun.filmLovers.models.entities
-masharun.filmLovers.models.tableModels
+masharun.filmLovers.controller
+masharun.filmLovers.model
+masharun.filmLovers.model.DAO
+masharun.filmLovers.model.entities
+masharun.filmLovers.model.tableModels
 masharun.filmLovers.view
-masharun.filmLovers.view.forms
+masharun.filmLovers.view.activities

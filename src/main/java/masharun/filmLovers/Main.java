@@ -1,35 +1,30 @@
 package masharun.filmLovers;
 
-import masharun.filmLovers.connection.ConnectionManager;
-import masharun.filmLovers.models.entities.User;
+import masharun.filmLovers.controller.ConnectionManager;
+import masharun.filmLovers.model.entities.User;
 import masharun.filmLovers.view.OptionPane;
-import masharun.filmLovers.view.forms.MainForm;
+import masharun.filmLovers.view.activities.MainActivity;
 
 import java.sql.SQLException;
 
-import static masharun.filmLovers.view.Config.MAIN_TITLE;
-
 public class Main {
     
-    private static final BaseForm MAIN_FORM = new BaseForm();
+    private static final BaseActivity MAIN_ACTIVITY = new BaseActivity();
     private static User currentUser;
     
     public static void main( String[] args ) {
+        System.err.println();
         try {
             ConnectionManager.initialize();
-        } catch ( SQLException | ClassNotFoundException e ) {
+        } catch( SQLException | ClassNotFoundException e ) {
             OptionPane.showMessage( e.toString(), "Ошибка подключения" );
         }
-        MAIN_FORM.setNewForm( new MainForm() );
-        MAIN_FORM.setVisible( true );
-    }
-    
-    public static void setTitle() {
-        MAIN_FORM.setTitle( MAIN_TITLE );
+        MAIN_ACTIVITY.setNewForm( new MainActivity() );
+        MAIN_ACTIVITY.setVisible( true );
     }
     
     public static void setTitle( String title ) {
-        MAIN_FORM.setTitle( MAIN_TITLE + " - " + title );
+        MAIN_ACTIVITY.setTitle( title );
     }
     
     public static User getCurrentUser() {
@@ -40,7 +35,7 @@ public class Main {
         Main.currentUser = currentUser;
     }
     
-    public static BaseForm getMainForm() {
-        return MAIN_FORM;
+    public static BaseActivity getMainActivity() {
+        return MAIN_ACTIVITY;
     }
 }
