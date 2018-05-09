@@ -65,7 +65,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>masharun.filmLovers.Main</mainClass>
+                            <mainClass>me.mashyrin.filmLovers.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -98,7 +98,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>masharun.filmLovers.Main</mainClass>
+                            <mainClass>me.mashyrin.filmLovers.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

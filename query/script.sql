@@ -61,7 +61,7 @@ create table film
   name         varchar(256) default 'Filmname' :: character varying not null
     constraint name
     check ((name) :: text ~ '(^([.'' A-Za-zА-Яа-я0-9-]+)$)' :: text),
-  review       json,
+  review       jsonb default '{}' :: jsonb,
   constraint critic_score
   check ((critic_score >= (0) :: double precision) AND (score <= (10) :: double precision))
 );
@@ -133,20 +133,6 @@ create table user_role
   name varchar(64)
 );
 
-create view get_film as
-  SELECT
-    film.release_date,
-    film.budget,
-    film.score,
-    film.critic_score,
-    film.comment,
-    film.film_id,
-    film.genre_id,
-    film.country_id,
-    film.name,
-    film.comments
-  FROM film;
-
 create view get_filmworkers_role as
   SELECT
     filmworkers_role.role_id,
@@ -207,6 +193,19 @@ create view get_filmworker as
     filmworker.filmworker_id,
     filmworker.country_id
   FROM filmworker;
+
+create view get_film as
+  SELECT
+    film.release_date,
+    film.budget,
+    film.score,
+    film.critic_score,
+    film.comment,
+    film.film_id,
+    film.genre_id,
+    film.country_id,
+    film.name
+  FROM film;
 
 create function add_user(username character varying, pass character varying)
   returns character varying
@@ -318,6 +317,9 @@ language plpgsql
 as $$
 BEGIN
 
+  DELETE FROM score_film_to_user
+  WHERE film_id = film_id;
+
   DELETE FROM public.film
   WHERE film_id = my_film_id;
 
@@ -393,7 +395,7 @@ BEGIN
   THEN
     UPDATE public.film
     SET critic_score = (
-      SELECT AVG(critic_score)
+      SELECT AVG(score)
       FROM score_film_to_user
       WHERE film_id = my_film_id
     )
@@ -690,6 +692,91 @@ BEGIN
     THEN
       RAISE EXCEPTION 'Unknown error';
       RETURN;
+END;
+$$;
+
+create function add_film_review(my_film_id integer, my_login character varying, my_review character varying)
+  returns void
+language plpgsql
+as $$
+BEGIN
+  IF (
+       SELECT review
+       FROM film
+       WHERE film_id = my_film_id
+     ) -> my_login IS NULL
+  THEN
+    UPDATE film
+    SET review = review || jsonb_build_object(my_login, my_review)
+    WHERE film_id = my_film_id;
+  END IF;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
+create function delete_film_review(my_film_id integer, my_login character varying)
+  returns void
+language plpgsql
+as $$
+BEGIN
+  UPDATE film
+  SET review = review - my_login
+  WHERE film_id = my_film_id;
+
+  EXCEPTION
+  WHEN not_null_violation
+    THEN
+      RAISE EXCEPTION 'Field cant be NULL';
+      RETURN;
+
+  WHEN unique_violation
+    THEN
+      RAISE EXCEPTION 'Username must be unique';
+      RETURN;
+
+  WHEN check_violation
+    THEN
+      RAISE EXCEPTION 'Wrong format of field';
+      RETURN;
+
+  WHEN OTHERS
+    THEN
+      RAISE EXCEPTION 'Unknown error';
+      RETURN;
+END;
+$$;
+
+create function get_film_review(my_film_id integer)
+  returns TABLE(key text, value text)
+language plpgsql
+as $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    jsonb_object_keys(review)                     as keys,
+    (review -> jsonb_object_keys(review)) :: TEXT as value
+  FROM film
+  WHERE film_id = my_film_id;
 END;
 $$;
 

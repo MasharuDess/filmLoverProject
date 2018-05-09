@@ -1,0 +1,1 @@
+SELECT * FROM add_film_review( 3, 'criticblet', 'fuckyou' );
