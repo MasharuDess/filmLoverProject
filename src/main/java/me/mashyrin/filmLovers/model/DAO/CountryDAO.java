@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Counties DAO
+ */
 public class CountryDAO extends DAO<Country, Integer> {
     
     @Override
@@ -48,12 +51,18 @@ public class CountryDAO extends DAO<Country, Integer> {
         return result;
     }
     
+    /**
+     * This deleting method is deprecated
+     */
     @Override
     @Deprecated
     public void deleteById( Integer id ) throws SQLException {
         //can't be deleted
     }
     
+    /**
+     * This inserting method is deprecated
+     */
     @Override
     @Deprecated
     public Country insert( Country entity ) throws SQLException {
@@ -61,6 +70,9 @@ public class CountryDAO extends DAO<Country, Integer> {
         return null;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void update( Country entity ) throws SQLException {

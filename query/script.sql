@@ -318,7 +318,10 @@ as $$
 BEGIN
 
   DELETE FROM score_film_to_user
-  WHERE film_id = film_id;
+  WHERE film_id = my_film_id;
+
+  DELETE FROM filmworkers_role
+  WHERE film_id = my_film_id;
 
   DELETE FROM public.film
   WHERE film_id = my_film_id;
@@ -339,10 +342,10 @@ BEGIN
       RAISE EXCEPTION 'Wrong format of field';
       RETURN;
 
-  WHEN OTHERS
-    THEN
-      RAISE EXCEPTION 'Unknown error';
-      RETURN;
+  --WHEN OTHERS
+  --  THEN
+  --    RAISE EXCEPTION 'Unknown error';
+  --    RETURN;
 END;
 $$;
 
@@ -395,17 +398,17 @@ BEGIN
   THEN
     UPDATE public.film
     SET critic_score = (
-      SELECT AVG(score)
+      SELECT AVG(score_film_to_user.score)
       FROM score_film_to_user
-      WHERE film_id = my_film_id
+      WHERE film_id = my_film_id AND role = 'C'
     )
     WHERE film_id = my_film_id;
   ELSE
     UPDATE public.film
     SET score = (
-      SELECT AVG(score)
+      SELECT AVG(score_film_to_user.score)
       FROM score_film_to_user
-      WHERE film_id = my_film_id
+      WHERE film_id = my_film_id AND role <> 'C'
     )
     WHERE film_id = my_film_id;
   END IF;
@@ -451,17 +454,17 @@ BEGIN
   THEN
     UPDATE public.film
     SET critic_score = (
-      SELECT AVG(critic_score)
+      SELECT AVG(score_film_to_user.score)
       FROM score_film_to_user
-      WHERE film_id = my_film_id
+      WHERE film_id = my_film_id AND role = 'C'
     )
     WHERE film_id = my_film_id;
   ELSE
     UPDATE public.film
     SET score = (
-      SELECT AVG(score)
+      SELECT AVG(score_film_to_user.score)
       FROM score_film_to_user
-      WHERE film_id = my_film_id
+      WHERE film_id = my_film_id AND role <> 'C'
     )
     WHERE film_id = my_film_id;
   END IF;
@@ -482,10 +485,10 @@ BEGIN
       RAISE EXCEPTION 'Wrong format of field';
       RETURN;
 
-  WHEN OTHERS
-    THEN
-      RAISE EXCEPTION 'Unknown error';
-      RETURN;
+  --WHEN OTHERS
+  --  THEN
+  --    RAISE EXCEPTION 'Unknown error';
+  --    RETURN;
 END;
 $$;
 

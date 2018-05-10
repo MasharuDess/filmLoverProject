@@ -12,17 +12,17 @@ BEGIN
   THEN
     UPDATE public.film
     SET critic_score = (
-      SELECT AVG(score)
+      SELECT AVG(score_film_to_user.score)
       FROM score_film_to_user
-      WHERE film_id = my_film_id
+      WHERE film_id = my_film_id AND role = 'C'
     )
     WHERE film_id = my_film_id;
   ELSE
     UPDATE public.film
     SET score = (
-      SELECT AVG(score)
+      SELECT AVG(score_film_to_user.score)
       FROM score_film_to_user
-      WHERE film_id = my_film_id
+      WHERE film_id = my_film_id AND role <> 'C'
     )
     WHERE film_id = my_film_id;
   END IF;

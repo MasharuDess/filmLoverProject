@@ -25,6 +25,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.ACTORS_ACTIVITY_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.ALL_ACTORS_ACTIVITY_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Actors activity class. Can show two types of actors forms
+ *
+ * @author mashyrin
+ */
 public class ActorsActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -46,6 +51,9 @@ public class ActorsActivity implements Activity {
     private AllActorsTableModel allActorsTableModel;
     private ActorsTableModel actorsTableModel;
     
+    /**
+     * Initialising actors activity with all actors
+     */
     public ActorsActivity() {
         System.out.println();
         openAllActorsButton.setVisible( false );
@@ -62,6 +70,9 @@ public class ActorsActivity implements Activity {
         init( allActorsTableModel );
     }
     
+    /**
+     * Initialising actors activity in one film
+     */
     public ActorsActivity( Film film ) {
         this.film = film;
         editActorButton.setVisible( false );

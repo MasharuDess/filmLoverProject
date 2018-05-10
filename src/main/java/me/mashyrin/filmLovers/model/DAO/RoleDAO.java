@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Role DAO
+ */
 public class RoleDAO extends DAO<Role, Integer> {
     
     @Override
@@ -47,18 +50,27 @@ public class RoleDAO extends DAO<Role, Integer> {
         return result;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void deleteById( Integer id ) throws SQLException {
     
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public Role insert( Role entity ) throws SQLException {
         return null;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void update( Role entity ) throws SQLException {

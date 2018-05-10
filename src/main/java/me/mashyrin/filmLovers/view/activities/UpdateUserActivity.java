@@ -18,6 +18,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.UPDATE_USER_ACTIVITY_TITLE;
 import static me.mashyrin.filmLovers.view.Config.NUMBERS.YEAR_COUNT;
 
+/**
+ * Update user activity class
+ *
+ * @author mashyrin
+ */
 public class UpdateUserActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -39,6 +44,9 @@ public class UpdateUserActivity implements Activity {
     private JLabel passwordLabel;
     private JLabel repeatPassword;
     
+    /**
+     * Update user activity constructor
+     */
     public UpdateUserActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( UPDATE_USER_ACTIVITY_TITLE );

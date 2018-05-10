@@ -15,6 +15,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.ADD_REVIEW_ACTIVITY_TITL
 import static me.mashyrin.filmLovers.view.Config.TITLES.CONGRATULATION_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Adding review activity class
+ *
+ * @author mashyrin
+ */
 public class AddReviewActivity implements Activity {
     private JPanel rootPanel;
     private JTextArea textArea;
@@ -28,6 +33,11 @@ public class AddReviewActivity implements Activity {
     private JPanel focusPanel;
     private Film film;
     
+    /**
+     * Adding review activity constructor
+     *
+     * @param film
+     */
     public AddReviewActivity( Film film ) {
         System.out.println();
         mainTitle.setText( MAIN_TITLE );

@@ -2,8 +2,16 @@ package me.mashyrin.filmLovers.view;
 
 import me.mashyrin.filmLovers.Main;
 
+/**
+ * Configuration class
+ *
+ * @author mashyrin
+ */
 public final class Config {
     
+    /**
+     * Constant number's values class
+     */
     public static final class NUMBERS {
         public static final int WINDOW_WIDTH = 720;
         public static final int WINDOW_HEIGHT = 480;
@@ -11,6 +19,9 @@ public final class Config {
         public static final int YEAR_COUNT = 118;
     }
     
+    /**
+     * Constant title's values class
+     */
     public static final class TITLES {
         public static final String MAIN_FORM_TITLE = null;
         public static final String CONGRATULATION_TITLE = "Поздравляем";
@@ -33,6 +44,11 @@ public final class Config {
         public static final String GRAPHIC_ACTIVITY_TITLE = "График";
         public static final String ADD_REVIEW_ACTIVITY_TITLE = "Добавление рецензии";
         
+        /**
+         * Setting application title
+         *
+         * @param title
+         */
         public static void setTitle( String title ) {
             if( title == null ) {
                 Main.setTitle( MAIN_TITLE );
@@ -42,6 +58,9 @@ public final class Config {
         }
     }
     
+    /**
+     * Constant error's values class
+     */
     public static final class ERRORS {
         public static final String ERROR_TITLE = "Ошибка";
         public static final String SORRY_TITLE = "Извините";

@@ -20,6 +20,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.ACTORS_ADD_ACTIVITY_TITL
 import static me.mashyrin.filmLovers.view.Config.TITLES.CONGRATULATION_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Actor's role add activity class
+ *
+ * @author mashyrin
+ */
 public class ActorsRoleAddActivity implements Activity {
     private JPanel rootPanel;
     private JButton addButton;
@@ -36,6 +41,11 @@ public class ActorsRoleAddActivity implements Activity {
     private Film film;
     private ArrayList<Filmworker> filmworkerList;
     
+    /**
+     * Actor's role adding activity constructor
+     *
+     * @param film
+     */
     public ActorsRoleAddActivity( Film film ) {
         System.out.println();
         mainTitle.setText( MAIN_TITLE );

@@ -15,6 +15,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.AUTHENTICATION_ACTIVITY_
 import static me.mashyrin.filmLovers.view.Config.TITLES.CONGRATULATION_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Authentication activity class
+ *
+ * @author mashyrin
+ */
 public class AuthenticationActivity implements Activity {
     private JPanel rootPanel;
     private JLabel mainTitle;
@@ -27,6 +32,9 @@ public class AuthenticationActivity implements Activity {
     private JTextField loginField;
     private JPasswordField passwordField;
     
+    /**
+     * Authentication activity constructor
+     */
     public AuthenticationActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( AUTHENTICATION_ACTIVITY_TITLE );

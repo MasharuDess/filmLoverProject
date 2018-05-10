@@ -6,10 +6,21 @@ import java.sql.SQLException;
 
 import static me.mashyrin.filmLovers.controller.ConnectionConfig.*;
 
+/**
+ * Connection to database class
+ *
+ * @author Mashyrin
+ */
 public class ConnectionManager {
     
     private static Connection connection;
     
+    /**
+     * Creating connection object to connect to database
+     *
+     * @throws SQLException           - SQL error into database
+     * @throws ClassNotFoundException - Throws when connection class not found
+     */
     public static void initialize() throws SQLException, ClassNotFoundException {
         if( connection == null ) {
             Class.forName( DRIVER_PATH );
@@ -17,6 +28,9 @@ public class ConnectionManager {
         }
     }
     
+    /**
+     * Closing connection to database
+     */
     public static void close() {
         try {
             connection.close();
@@ -26,6 +40,9 @@ public class ConnectionManager {
         }
     }
     
+    /**
+     * @return returns connection object
+     */
     public static Connection getConnection() {
         return connection;
     }

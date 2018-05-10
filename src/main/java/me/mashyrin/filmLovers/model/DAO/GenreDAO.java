@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Genre DAO
+ */
 public class GenreDAO extends DAO<Genre, Integer> {
     
     @Override
@@ -48,12 +51,18 @@ public class GenreDAO extends DAO<Genre, Integer> {
         return result;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void deleteById( Integer id ) throws SQLException {
         //can't be deleted
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public Genre insert( Genre entity ) throws SQLException {
@@ -61,6 +70,9 @@ public class GenreDAO extends DAO<Genre, Integer> {
         return null;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void update( Genre entity ) throws SQLException {

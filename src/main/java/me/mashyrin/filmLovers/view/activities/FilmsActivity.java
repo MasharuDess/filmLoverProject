@@ -18,6 +18,11 @@ import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.FILMS_ACTIVITY_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Films activity class
+ *
+ * @author mashyrin
+ */
 public class FilmsActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -50,6 +55,9 @@ public class FilmsActivity implements Activity {
     private JScrollPane scrollPane;
     private ArrayList<Film> filmList;
     
+    /**
+     * Films activity constructor
+     */
     public FilmsActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( FILMS_ACTIVITY_TITLE );
@@ -155,9 +163,8 @@ public class FilmsActivity implements Activity {
             
             if( Main.getCurrentUser().getRole().equals( "C" ) ) {
                 try {
-                    String strScore = new FilmDAO().selectById( filmList.get(
-                            filmComboBox.getSelectedIndex() ).getFilmId() ).getCriticScore().toString();
-                    criticScore.setText( strScore );
+                    criticScore.setText( String.format( "%(.1f", new FilmDAO().selectById( filmList.get(
+                            filmComboBox.getSelectedIndex() ).getFilmId() ).getCriticScore() ) );
                     filmList.get( filmComboBox.getSelectedIndex() ).setCriticScore(
                             ( double ) scoreSlider.getValue() );
                 } catch( SQLException e ) {
@@ -166,8 +173,8 @@ public class FilmsActivity implements Activity {
                 }
             } else {
                 try {
-                    userScore.setText( new FilmDAO().selectById( filmList.get(
-                            filmComboBox.getSelectedIndex() ).getFilmId() ).getScore().toString() );
+                    userScore.setText( String.format( "%(.1f", new FilmDAO().selectById( filmList.get(
+                            filmComboBox.getSelectedIndex() ).getFilmId() ).getScore() ) );
                     filmList.get( filmComboBox.getSelectedIndex() ).setScore(
                             ( double ) scoreSlider.getValue() );
                 } catch( SQLException e ) {

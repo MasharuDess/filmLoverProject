@@ -75,8 +75,8 @@
     <schema id="17" parent="3" name="public">
       <ObjectId>2200</ObjectId>
       <Comment>standard public schema</Comment>
-      <IntrospectionTimestamp>2018-05-09.18:18:16.757</IntrospectionTimestamp>
-      <IntrospectionStateNumber>893</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2018-05-10.12:13:02.964</IntrospectionTimestamp>
+      <IntrospectionStateNumber>1070</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -234,7 +234,7 @@
     </routine>
     <routine id="45" parent="17" name="add_score">
       <ObjectId>16554</ObjectId>
-      <StateNumber>758</StateNumber>
+      <StateNumber>1069</StateNumber>
       <VolatilityKind>volatile</VolatilityKind>
       <ArgumentsDefinition>user_name character varying, my_film_id integer, my_score double precision, my_role character varying</ArgumentsDefinition>
       <ResultsDefinition>void</ResultsDefinition>
@@ -254,7 +254,7 @@
     </routine>
     <routine id="47" parent="17" name="delete_film">
       <ObjectId>16550</ObjectId>
-      <StateNumber>854</StateNumber>
+      <StateNumber>960</StateNumber>
       <VolatilityKind>volatile</VolatilityKind>
       <ArgumentsDefinition>my_film_id integer</ArgumentsDefinition>
       <ResultsDefinition>void</ResultsDefinition>
@@ -294,7 +294,7 @@
     </routine>
     <routine id="51" parent="17" name="delete_score">
       <ObjectId>16555</ObjectId>
-      <StateNumber>672</StateNumber>
+      <StateNumber>1070</StateNumber>
       <VolatilityKind>volatile</VolatilityKind>
       <ArgumentsDefinition>user_name character varying, my_film_id integer</ArgumentsDefinition>
       <ResultsDefinition>void</ResultsDefinition>
@@ -314,7 +314,7 @@
     </routine>
     <routine id="53" parent="17" name="edit_film">
       <ObjectId>16556</ObjectId>
-      <StateNumber>674</StateNumber>
+      <StateNumber>1062</StateNumber>
       <VolatilityKind>volatile</VolatilityKind>
       <ArgumentsDefinition>my_release_date date, my_budget integer, my_comment character varying, my_genre_id integer, my_country_id integer, my_name character varying, my_film_id integer</ArgumentsDefinition>
       <ResultsDefinition>void</ResultsDefinition>

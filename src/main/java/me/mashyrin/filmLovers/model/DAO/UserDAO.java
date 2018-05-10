@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * User DAO
+ */
 public class UserDAO extends DAO<User, String> {
     
     @Override
@@ -106,6 +109,13 @@ public class UserDAO extends DAO<User, String> {
         }
     }
     
+    /**
+     * Another update method
+     *
+     * @param login
+     * @param password
+     * @throws SQLException - SQL error into database
+     */
     public void update( String login, String password ) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
@@ -120,6 +130,14 @@ public class UserDAO extends DAO<User, String> {
         }
     }
     
+    /**
+     * Call getting user entity if it exists
+     *
+     * @param id
+     * @param password
+     * @return User entity
+     * @throws SQLException - SQL error into database
+     */
     public User getIfExists( String id, String password ) throws SQLException {
         User result = new User();
         PreparedStatement preparedStatement = null;

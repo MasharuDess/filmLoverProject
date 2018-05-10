@@ -16,6 +16,11 @@ import java.util.Set;
 
 import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 
+/**
+ * Personal area table model class
+ *
+ * @author mashyrin
+ */
 public class PersonalAreaTableModel implements TableModel {
     
     private ScoreDAO scoreDAO = new ScoreDAO();
@@ -27,12 +32,12 @@ public class PersonalAreaTableModel implements TableModel {
             ArrayList<Score> scoreList = scoreDAO.selectAll();
             ArrayList<Score> buffList = new ArrayList<>();
             for( Score score : scoreList ) {
-                if ( score.getLogin().equals( Main.getCurrentUser().getLogin())) {
+                if( score.getLogin().equals( Main.getCurrentUser().getLogin() ) ) {
                     buffList.add( score );
                 }
             }
             return buffList.size();
-        } catch ( SQLException e ) {
+        } catch( SQLException e ) {
             OptionPane.showMessage( "Ошибка загрузки записей базы данных", ERROR_TITLE );
             System.err.println( e.toString() );
             return 0;
@@ -54,15 +59,15 @@ public class PersonalAreaTableModel implements TableModel {
             case 2:
                 return "Ваша оценка";
         }
-    
+        
         return null;
     }
     
     @Override
     public Class<?> getColumnClass( int columnIndex ) {
-        if ( columnIndex == 0 || columnIndex == 1 ) {
+        if( columnIndex == 0 || columnIndex == 1 ) {
             return String.class;
-        } else if ( columnIndex == 2 ) {
+        } else if( columnIndex == 2 ) {
             return Double.class;
         }
         return null;
@@ -79,22 +84,22 @@ public class PersonalAreaTableModel implements TableModel {
             ArrayList<Score> scoreList = scoreDAO.selectAll();
             ArrayList<Score> buffList = new ArrayList<>();
             for( Score score : scoreList ) {
-                if ( score.getLogin().equals( Main.getCurrentUser().getLogin())) {
+                if( score.getLogin().equals( Main.getCurrentUser().getLogin() ) ) {
                     buffList.add( score );
                 }
             }
             Score score = buffList.get( rowIndex );
-        
-            switch ( columnIndex ) {
+            
+            switch( columnIndex ) {
                 case 0:
-                    return ( new FilmDAO().selectById( score.getFilmId() ).getName());
+                    return ( new FilmDAO().selectById( score.getFilmId() ).getName() );
                 case 1:
                     return ( new GenreDAO().selectById( new FilmDAO().selectById(
-                            score.getFilmId() ).getGenreId()).getGenre());
+                            score.getFilmId() ).getGenreId() ).getGenre() );
                 case 2:
                     return score.getScore();
             }
-        } catch ( SQLException | NullPointerException e ) {
+        } catch( SQLException | NullPointerException e ) {
             OptionPane.showMessage( "Ошибка загрузки записей базы данных", ERROR_TITLE );
         }
         return null;

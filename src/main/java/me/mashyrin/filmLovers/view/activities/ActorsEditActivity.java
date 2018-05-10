@@ -18,6 +18,11 @@ import static me.mashyrin.filmLovers.view.Config.NUMBERS.CURRENT_YEAR;
 import static me.mashyrin.filmLovers.view.Config.NUMBERS.YEAR_COUNT;
 import static me.mashyrin.filmLovers.view.Config.TITLES.*;
 
+/**
+ * Editting actors activity class. Can add and change actors into database
+ *
+ * @author mashyrin
+ */
 public class ActorsEditActivity implements Activity {
     private JPanel rootPanel;
     private JPanel footerPanel;
@@ -36,6 +41,9 @@ public class ActorsEditActivity implements Activity {
     private JLabel countryLabel;
     private Filmworker filmworker;
     
+    /**
+     * Initialising adding activity
+     */
     public ActorsEditActivity() {
         System.out.println();
         mainTitle.setText( MAIN_TITLE );
@@ -45,6 +53,11 @@ public class ActorsEditActivity implements Activity {
         initListeners();
     }
     
+    /**
+     * Initialising editing activity
+     *
+     * @param filmworker
+     */
     public ActorsEditActivity( Filmworker filmworker ) {
         this.filmworker = filmworker;
         mainTitle.setText( MAIN_TITLE );

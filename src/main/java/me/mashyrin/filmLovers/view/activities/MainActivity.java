@@ -13,6 +13,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.CONGRATULATION_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_FORM_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Main activity class. Calls when program start
+ *
+ * @author mashyrin
+ */
 public class MainActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -25,6 +30,9 @@ public class MainActivity implements Activity {
     private JLabel footerShowerLabel;
     private JButton reconnectButton;
     
+    /**
+     * Main activity constructor
+     */
     public MainActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( MAIN_FORM_TITLE );

@@ -6,10 +6,19 @@ import me.mashyrin.filmLovers.model.entities.FilmworkersRole;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Filmworker's roles DAO
+ */
 public class FilmworkersRoleDAO {
     
     private Connection connection = ConnectionManager.getConnection();
     
+    /**
+     * Call selecting all actors function
+     *
+     * @return returns ArrayList of actors
+     * @throws SQLException - SQL error into database
+     */
     public ArrayList<FilmworkersRole> selectAll() throws SQLException {
         ArrayList<FilmworkersRole> filmworkersRoleArrayList = new ArrayList<>();
         try( Statement statement = connection.createStatement() ) {
@@ -28,6 +37,14 @@ public class FilmworkersRoleDAO {
         
     }
     
+    /**
+     * Call deleting function
+     *
+     * @param roleId
+     * @param filmworkerId
+     * @param filmId
+     * @throws SQLException - SQL error into database
+     */
     public void deleteById( Integer roleId, Integer filmworkerId, Integer filmId ) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
@@ -43,6 +60,14 @@ public class FilmworkersRoleDAO {
         }
     }
     
+    /**
+     * Call inserting function
+     *
+     * @param roleId
+     * @param filmworkerId
+     * @param filmId
+     * @throws SQLException - SQL error into database
+     */
     public void insert( Integer roleId, Integer filmworkerId, Integer filmId ) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {

@@ -36,6 +36,13 @@ public class FilmDAO extends DAO<Film, Integer> {
         return filmArrayList;
     }
     
+    /**
+     * Call adding review to JSON function
+     *
+     * @param filmId
+     * @param review - your review
+     * @throws SQLException - SQL error into database
+     */
     public void addReview( Integer filmId, String review ) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
@@ -51,6 +58,12 @@ public class FilmDAO extends DAO<Film, Integer> {
         }
     }
     
+    /**
+     * Call deleting review from JSON function
+     *
+     * @param filmId
+     * @throws SQLException - SQL error into database
+     */
     public void deleteReview( Integer filmId ) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
@@ -65,6 +78,13 @@ public class FilmDAO extends DAO<Film, Integer> {
         }
     }
     
+    /**
+     * Call selecting reviews from JSON function
+     *
+     * @param filmId
+     * @return HashMap of login like String key and review like String value
+     * @throws SQLException - SQL error into database
+     */
     public HashMap<String, String> selectFilmReview( Integer filmId ) throws SQLException {
         HashMap<String, String> result = new HashMap<>();
         PreparedStatement preparedStatement = null;

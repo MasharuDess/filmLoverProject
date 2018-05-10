@@ -13,6 +13,11 @@ import java.util.Set;
 
 import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 
+/**
+ * All actors table model class
+ *
+ * @author mashyrin
+ */
 public class AllActorsTableModel implements TableModel {
     
     private FilmworkerDAO filmworkerDAO = new FilmworkerDAO();

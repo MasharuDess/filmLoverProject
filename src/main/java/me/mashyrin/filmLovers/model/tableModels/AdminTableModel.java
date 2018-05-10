@@ -13,6 +13,11 @@ import java.util.Set;
 
 import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 
+/**
+ * Admin table model class
+ *
+ * @author mashyrin
+ */
 public class AdminTableModel implements TableModel {
     
     private UserDAO userDAO = new UserDAO();
@@ -22,7 +27,7 @@ public class AdminTableModel implements TableModel {
     public int getRowCount() {
         try {
             return userDAO.selectAll().size();
-        } catch ( SQLException e ) {
+        } catch( SQLException e ) {
             OptionPane.showMessage( "Ошибка загрузки записей базы данных", ERROR_TITLE );
             System.err.println( e.toString() );
             return 0;
@@ -55,7 +60,7 @@ public class AdminTableModel implements TableModel {
     
     @Override
     public Class<?> getColumnClass( int columnIndex ) {
-        if ( columnIndex == 0 || columnIndex == 3 ) {
+        if( columnIndex == 0 || columnIndex == 3 ) {
             return Integer.class;
         } else {
             return String.class;
@@ -72,8 +77,8 @@ public class AdminTableModel implements TableModel {
         try {
             ArrayList<User> userArrayList = userDAO.selectAll();
             User user = userArrayList.get( rowIndex );
-        
-            switch ( columnIndex ) {
+            
+            switch( columnIndex ) {
                 case 0:
                     return user.getLogin();
                 case 1:
@@ -85,7 +90,7 @@ public class AdminTableModel implements TableModel {
                 case 4:
                     return user.getRole();
             }
-        } catch ( SQLException | NullPointerException e ) {
+        } catch( SQLException | NullPointerException e ) {
             OptionPane.showMessage( "Ошибка загрузки записей базы данных", ERROR_TITLE );
         }
         return null;

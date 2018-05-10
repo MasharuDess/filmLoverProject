@@ -7,11 +7,20 @@ import me.mashyrin.filmLovers.view.activities.MainActivity;
 
 import java.sql.SQLException;
 
+/**
+ * Main program class
+ *
+ * @author mashyrin
+ */
 public class Main {
-    
     private static final BaseActivity MAIN_ACTIVITY = new BaseActivity();
     private static User currentUser;
     
+    /**
+     * Starting program and calling base activity
+     *
+     * @param args
+     */
     public static void main( String[] args ) {
         try {
             ConnectionManager.initialize();
@@ -22,18 +31,32 @@ public class Main {
         MAIN_ACTIVITY.setVisible( true );
     }
     
+    /**
+     * Setting application title
+     *
+     * @param title
+     */
     public static void setTitle( String title ) {
         MAIN_ACTIVITY.setTitle( title );
     }
     
+    /**
+     * @return current user
+     */
     public static User getCurrentUser() {
         return currentUser;
     }
     
+    /**
+     * @param currentUser
+     */
     public static void setCurrentUser( User currentUser ) {
         Main.currentUser = currentUser;
     }
     
+    /**
+     * @return base activity
+     */
     public static BaseActivity getMainActivity() {
         return MAIN_ACTIVITY;
     }

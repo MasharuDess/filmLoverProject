@@ -18,6 +18,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.CONGRATULATION_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.REVIEW_ACTIVITY_TITLE;
 
+/**
+ * Review activity class
+ *
+ * @author mashyrin
+ */
 public class ReviewActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -25,7 +30,7 @@ public class ReviewActivity implements Activity {
     private JButton exitButton;
     private JButton backButton;
     private JLabel mainTitle;
-    private JTextArea textArea;
+    private JTextPane textArea;
     private JComboBox comboBox;
     private JButton addReviewButton;
     private JButton deleteReviewButton;
@@ -33,6 +38,11 @@ public class ReviewActivity implements Activity {
     private Film film;
     private Map reviewMap;
     
+    /**
+     * Review activity constructor
+     *
+     * @param film
+     */
     public ReviewActivity( Film film ) {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( REVIEW_ACTIVITY_TITLE );
@@ -134,5 +144,6 @@ public class ReviewActivity implements Activity {
     @Override
     public void reinit() {
         Config.TITLES.setTitle( REVIEW_ACTIVITY_TITLE );
+        
     }
 }

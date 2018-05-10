@@ -17,6 +17,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.CONGRATULATION_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.REGISTRATION_ACTIVITY_TITLE;
 
+/**
+ * Registration activity class
+ *
+ * @author mashyrin
+ */
 public class RegistrationActivity implements Activity {
     private JPanel rootPanel;
     private JPanel footerPanel;
@@ -38,6 +43,9 @@ public class RegistrationActivity implements Activity {
     private JLabel birthdayLabel;
     private JLabel helpLabel;
     
+    /**
+     * Registration activity constructor
+     */
     public RegistrationActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( REGISTRATION_ACTIVITY_TITLE );

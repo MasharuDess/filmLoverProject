@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Filmworkers DAO
+ */
 public class FilmworkerDAO extends DAO<Filmworker, Integer> {
     
     @Override

@@ -19,6 +19,11 @@ import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.PERSONAL_AREA_ACTIVITY_TITLE;
 
+/**
+ * Personal area activity class
+ *
+ * @author mashyrin
+ */
 public class PersonalAreaActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -34,6 +39,9 @@ public class PersonalAreaActivity implements Activity {
     private JButton scheduleButton;
     private TableRowSorter<TableModel> rowSorter;
     
+    /**
+     * Personal area activity constructor
+     */
     public PersonalAreaActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( PERSONAL_AREA_ACTIVITY_TITLE );
@@ -69,7 +77,7 @@ public class PersonalAreaActivity implements Activity {
                         Main.getCurrentUser().getLogin() );
                 table.updateUI();
             } catch( SQLException e ) {
-                OptionPane.showMessage( "Ошибка удаления пользователя", ERROR_TITLE );
+                OptionPane.showMessage( "Ошибка удаления оценки", ERROR_TITLE );
                 System.err.println( e.toString() );
             }
         } );

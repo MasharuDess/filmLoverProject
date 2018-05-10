@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Score DAO
+ */
 public class ScoreDAO extends ExtendedDAO<Score, Integer, String> {
     
     @Override
@@ -31,6 +34,13 @@ public class ScoreDAO extends ExtendedDAO<Score, Integer, String> {
         return scoreArrayList;
     }
     
+    /**
+     * Selecting count of scores
+     *
+     * @param login
+     * @return returns ArrayList of score's count
+     * @throws SQLException - SQL error into database
+     */
     public ArrayList<ScoreCount> selectCountScore( String login ) throws SQLException {
         PreparedStatement preparedStatement = null;
         ArrayList<ScoreCount> scoreList = new ArrayList<>();
@@ -54,7 +64,9 @@ public class ScoreDAO extends ExtendedDAO<Score, Integer, String> {
         return scoreList;
     }
     
-    
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public Score selectById( Integer id ) throws SQLException {
@@ -62,6 +74,9 @@ public class ScoreDAO extends ExtendedDAO<Score, Integer, String> {
         return null;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void deleteById( Integer id ) throws SQLException {
@@ -86,6 +101,9 @@ public class ScoreDAO extends ExtendedDAO<Score, Integer, String> {
         return entity;
     }
     
+    /**
+     * This updating method is deprecated
+     */
     @Override
     @Deprecated
     public void update( Score entity ) throws SQLException {

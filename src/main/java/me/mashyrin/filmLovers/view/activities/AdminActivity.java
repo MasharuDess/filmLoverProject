@@ -18,6 +18,11 @@ import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.ADMIN_ACTIVITY_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Admin activity class
+ *
+ * @author mashyrin
+ */
 public class AdminActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -32,6 +37,9 @@ public class AdminActivity implements Activity {
     private JButton updateRoleButton;
     private TableRowSorter<TableModel> rowSorter;
     
+    /**
+     * Admin activity constructor
+     */
     public AdminActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( ADMIN_ACTIVITY_TITLE );

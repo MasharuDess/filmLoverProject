@@ -20,6 +20,11 @@ import static me.mashyrin.filmLovers.view.Config.TITLES.CHART_NAME_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.GRAPHIC_ACTIVITY_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.MAIN_TITLE;
 
+/**
+ * Graphic activity class
+ *
+ * @author mashyrin
+ */
 public class GraphicActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -30,6 +35,9 @@ public class GraphicActivity implements Activity {
     private JLabel userNameTitle;
     private JPanel graphicPanel;
     
+    /**
+     * Graphic activity constructor
+     */
     public GraphicActivity() {
         mainTitle.setText( MAIN_TITLE );
         Config.TITLES.setTitle( GRAPHIC_ACTIVITY_TITLE );

@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import static me.mashyrin.filmLovers.view.Config.ERRORS.ERROR_TITLE;
 import static me.mashyrin.filmLovers.view.Config.TITLES.*;
 
+/**
+ * Film edit activity class. Can add and edit films
+ *
+ * @author mashyrin
+ */
 public class FilmEditActivity implements Activity {
     private JPanel rootPanel;
     private JPanel headerPanel;
@@ -44,6 +49,9 @@ public class FilmEditActivity implements Activity {
     private JLabel dateFormatLabel;
     private Film film;
     
+    /**
+     * Initialising adding film activity
+     */
     public FilmEditActivity() {
         Config.TITLES.setTitle( FILM_ADD_FORM_ACTIVITY );
         mainTitle.setText( MAIN_TITLE );
@@ -52,6 +60,11 @@ public class FilmEditActivity implements Activity {
         initAddListeners();
     }
     
+    /**
+     * Initialising edit film activity
+     *
+     * @param film
+     */
     public FilmEditActivity( Film film ) {
         Config.TITLES.setTitle( FILM_EDIT_ACTIVITY_TITLE );
         mainTitle.setText( MAIN_TITLE );
